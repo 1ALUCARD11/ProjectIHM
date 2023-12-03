@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="MainPanel">
+  <grid id="27dc6" binding="mainpanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="638" height="400"/>
+    </constraints>
+    <properties>
+      <preferredSize width="-1" height="-1"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="889ef" binding="header_panel" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="80f9d" class="javax.swing.JButton" binding="admin_b">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="200" height="20"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="ADMIN"/>
+            </properties>
+          </component>
+          <hspacer id="96747">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="420" height="11"/>
+              </grid>
+            </constraints>
+          </hspacer>
+          <vspacer id="eb1dd">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                <preferred-size width="420" height="14"/>
+              </grid>
+            </constraints>
+          </vspacer>
+          <vspacer id="cfafc">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                <preferred-size width="420" height="14"/>
+              </grid>
+            </constraints>
+          </vspacer>
+          <grid id="87461" binding="nav_panel" layout-manager="FlowLayout" hgap="15" vgap="5" flow-align="1">
+            <constraints>
+              <grid row="3" column="0" row-span="3" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="8337e" class="javax.swing.JButton" binding="accueil_b">
+                <constraints/>
+                <properties>
+                  <text value="Accueil"/>
+                </properties>
+              </component>
+              <hspacer id="a468d">
+                <constraints/>
+              </hspacer>
+              <component id="88545" class="javax.swing.JButton" binding="livres_b">
+                <constraints/>
+                <properties>
+                  <horizontalTextPosition value="0"/>
+                  <text value="Livres"/>
+                </properties>
+              </component>
+              <hspacer id="27168">
+                <constraints/>
+              </hspacer>
+              <component id="82907" class="javax.swing.JButton" binding="enseignant_b">
+                <constraints/>
+                <properties>
+                  <text value="Enseignant"/>
+                </properties>
+              </component>
+              <hspacer id="87a58">
+                <constraints/>
+              </hspacer>
+              <component id="c6a0a" class="javax.swing.JButton" binding="memoire_b">
+                <constraints/>
+                <properties>
+                  <text value="Memoires"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="676c5" binding="cardpanel" layout-manager="CardLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="fb9ac" binding="accueil_p" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <card name="Accueil"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+          <grid id="6c5c6" binding="memoires_p" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <card name="Memoires"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+          <grid id="815ad" binding="enseignant_p" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <card name="Enseignant"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+          <grid id="34934" binding="livre_p" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <card name="Livres"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

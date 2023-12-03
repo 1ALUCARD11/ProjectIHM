@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?PowerDesigner signature="Workspace" version="15.1.0.2850"?>
+<!-- Veuillez ne pas modifier ce fichier -->
+
+<Workspace>
+	<Local Expanded="Yes">
+		<Model Expanded="Yes" ID="{15C35AC2-2AFE-4154-A5DE-A1E920147CBC}" Name="Series1" Type="{FF4B6538-9856-42CF-B9B9-304ED370CEAA}" URL="Series1/Series1.prj"/>
+	</Local>
+	<BrowserModule Name="Référentiel"/>
+</Workspace>
