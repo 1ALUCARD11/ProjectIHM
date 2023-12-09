@@ -12,6 +12,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import java.util.*;
+import java.util.List;
 
 public class AdminPage extends JFrame {
     Connection connection;
@@ -75,6 +79,8 @@ public class AdminPage extends JFrame {
 
     private  JFileChooser pdfchooser;
 
+    private Path thepath;
+
     AdminPage() {
 
 
@@ -99,7 +105,7 @@ public class AdminPage extends JFrame {
                 if (i != -1) {
                     int id_int = (int) memoires_t.getValueAt(i, 0);
                     id = String.valueOf(id_int);
-                    System.out.println(id + "   this is the id ");
+                    System.out.println(id + " this is the id ");
                 }
 
                 try {
@@ -154,7 +160,8 @@ public class AdminPage extends JFrame {
                 annee_tf,
                 cote_tf,
                 resume_tf,
-                enseignant_tf));
+                enseignant_tf,
+                thepath.toString()));
 
 
         recherche_b.addActionListener(e -> {
@@ -169,7 +176,7 @@ public class AdminPage extends JFrame {
                 idm = id;
             } else idm = recherche_tf.getText();
 
-            Methodes.updateMemoire(connection, memoires_t, idm, titre_tf, etudiants_tf, annee_tf, cote_tf, resume_tf, enseignant_tf);
+            Methodes.updateMemoire(connection, memoires_t, idm, titre_tf, etudiants_tf, annee_tf, cote_tf, resume_tf, enseignant_tf,thepath.toString());
 
 
         });
@@ -278,7 +285,7 @@ public class AdminPage extends JFrame {
 
         ajouterlivre_b.addActionListener(e -> {
 
-            Methodes.addLivre(connection,livres_t,titrelivre_tf,auteurlivre_tf,anneelivre_tf,cotelivre_tf);
+            Methodes.addLivre(connection,livres_t,titrelivre_tf,auteurlivre_tf,anneelivre_tf,cotelivre_tf,thepath.toString());
 
         });
         modifierButton.addActionListener(e -> {
@@ -286,7 +293,7 @@ public class AdminPage extends JFrame {
             if (recherchlivre_tf.getText().isEmpty()){
                 idl = id_livre;
             }else idl =recherchlivre_tf.getText();
-            Methodes.updateLivre(connection,livres_t,idl,titrelivre_tf,auteurlivre_tf,anneelivre_tf,cotelivre_tf);
+            Methodes.updateLivre(connection,livres_t,idl,titrelivre_tf,auteurlivre_tf,anneelivre_tf,cotelivre_tf,thepath.toString());
 
         });
         supprimerlivre_b.addActionListener(e -> {
@@ -301,32 +308,14 @@ public class AdminPage extends JFrame {
             Methodes.searchLivre(connection,livres_t,recherchlivre_tf.getText().isEmpty(),idl,titrelivre_tf,auteurlivre_tf,anneelivre_tf,cotelivre_tf);
         });
         ajouterPDFButton.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-
-            String pth = "";
-            int respons =  fileChooser.showOpenDialog(null);
-            if (respons == JFileChooser.APPROVE_OPTION){
-                File file = new File (fileChooser.getSelectedFile().getAbsolutePath());
-                pth = fileChooser.getSelectedFile().getAbsolutePath();
-
-                System.out.println(pth);
-                Path surcpath = Paths.get(pth);
-                Path destpath = Paths.get("D:/IntelJProgrammes/IHM_Project/src/Memoires/");
-
-                try{
-                    // Files.createDirectories(destpath);
-                    Path destinationpath = destpath.resolve(surcpath.getFileName());
-                    Files.copy(surcpath,destinationpath, StandardCopyOption.REPLACE_EXISTING);
-                    System.out.println("File copied successfuly to :" );
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
+            thepath = Methodes.addpdfs("Memoires");
+        });
 
 
+        ajouterPdfButton.addActionListener(e -> {
+            thepath = Methodes.addpdfs("Livres");
         });
     }
-
 
 
 

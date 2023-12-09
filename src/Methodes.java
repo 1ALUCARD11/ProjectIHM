@@ -1,7 +1,17 @@
 import net.proteanit.sql.DbUtils;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.*;
+import java.util.List;
 
 public class Methodes {
     public static Connection connect(String dbname) {
@@ -88,6 +98,35 @@ public class Methodes {
 
     }
 
+    public static void addMemoire(Connection connection, JTable table, JTextField titre, JTextField etudiant, JTextField annee, JTextField cote, JTextField resume, JTextField id_ens,String dirct) {
+
+        try {
+            PreparedStatement pst = connection.prepareStatement("insert into memoire(titre,etudiants,annee,cote,resume,id_enseignant,directoire)values(?,?,?,?,?,?,?)");
+            pst.setString(1, titre.getText());
+            pst.setString(2, etudiant.getText());
+            pst.setString(3, annee.getText());
+            pst.setString(4, cote.getText());
+            pst.setString(5, resume.getText());
+            pst.setString(6, id_ens.getText());
+            pst.setString(7, dirct);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Informations added successfuly !!");
+            etudiant.setText("");
+            titre.setText("");
+            cote.setText("");
+            annee.setText("");
+            resume.setText("");
+            id_ens.setText("");
+            titre.requestFocus();
+            fillTable("memoire", connection, table);
+
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+
+    }
+
+
     public static void deleteMemoire(Connection connection, JTable table, String id, JTextField titre, JTextField etudiant, JTextField annee, JTextField cote, JTextField resume, JTextField id_ens) {
 
         try {
@@ -108,36 +147,6 @@ public class Methodes {
         fillTable("memoire", connection, table);
     }
 
-    public static void updateMemoire(Connection connection, JTable table, String id, JTextField titre, JTextField etudiant, JTextField annee, JTextField cote, JTextField resume, JTextField id_ens) {
-
-
-        String dirct = "this is a temporary path";
-        try {
-            PreparedStatement pst = connection.prepareStatement("update memoire set titre = ?,etudiants = ?,annee = ?,cote = ?,resume = ?,id_enseignant = ?,directoire = ? where id_memoire = ?");
-            pst.setString(1, titre.getText());
-            pst.setString(2, etudiant.getText());
-            pst.setString(3, cote.getText());
-            pst.setString(4, annee.getText());
-            pst.setString(5, resume.getText());
-            pst.setString(6, id_ens.getText());
-            pst.setString(7, dirct);
-            pst.setString(8, id);
-            pst.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Informations Updated successfuly !!");
-            etudiant.setText("");
-            titre.setText("");
-            cote.setText("");
-            annee.setText("");
-            resume.setText("");
-            id_ens.setText("");
-            titre.requestFocus();
-            fillTable("memoire", connection, table);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-
-
-    }
 
 
     public static void searchMemoire(Connection connection, JTable table, String id, Boolean tf, JTextField titre, JTextField etudiant, JTextField annee, JTextField cote, JTextField resume, JTextField id_ens) {
@@ -182,20 +191,22 @@ public class Methodes {
         }
     }
 
-    public static void addMemoire(Connection connection, JTable table, JTextField titre, JTextField etudiant, JTextField annee, JTextField cote, JTextField resume, JTextField id_ens) {
+    public static void updateMemoire(Connection connection, JTable table, String id, JTextField titre, JTextField etudiant, JTextField annee, JTextField cote, JTextField resume, JTextField id_ens,String dirct) {
 
-        String dirct = "this is a temporary path";
+
+
         try {
-            PreparedStatement pst = connection.prepareStatement("insert into memoire(titre,etudiants,annee,cote,resume,id_enseignant,directoire)values(?,?,?,?,?,?,?)");
+            PreparedStatement pst = connection.prepareStatement("update memoire set titre = ?,etudiants = ?,annee = ?,cote = ?,resume = ?,id_enseignant = ?,directoire = ? where id_memoire = ?");
             pst.setString(1, titre.getText());
             pst.setString(2, etudiant.getText());
-            pst.setString(3, annee.getText());
-            pst.setString(4, cote.getText());
+            pst.setString(3, cote.getText());
+            pst.setString(4, annee.getText());
             pst.setString(5, resume.getText());
             pst.setString(6, id_ens.getText());
             pst.setString(7, dirct);
+            pst.setString(8, id);
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Informations added successfuly !!");
+            JOptionPane.showMessageDialog(null, "Informations Updated successfuly !!");
             etudiant.setText("");
             titre.setText("");
             cote.setText("");
@@ -204,12 +215,14 @@ public class Methodes {
             id_ens.setText("");
             titre.requestFocus();
             fillTable("memoire", connection, table);
-
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
 
+
     }
+
+
 
     public static void addEnseignant(Connection connection, JTable table, JTextField name, JTextField surname, JTextField specialty) {
         try {
@@ -230,26 +243,12 @@ public class Methodes {
         }
     }
 
-    public static void updateEnseignant(Connection connection, JTable table, String id, JTextField name, JTextField surname, JTextField specialty) {
+    public static void deleteEnseignant(Connection connection, JTable table, String id, JTextField name, JTextField surname, JTextField specialty) {
         try {
-            PreparedStatement pst = connection.prepareStatement("update enseignant set nom = ? ,prenom = ? ,specialite = ? where id_enseignant = ? ");
-            pst.setString(1, name.getText());
-            pst.setString(2, surname.getText());
-            pst.setString(3, specialty.getText());
-            pst.setString(4, id);
-            if (name.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "champ nom est vide!!");
-                return;
-
-            } else if (surname.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "champ prenome est vide!!");
-                return;
-            } else if (specialty.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "champ specialite est vide!!");
-                return;
-            }
+            PreparedStatement pst = connection.prepareStatement("delete from enseignant where id_enseignant = ?");
+            pst.setString(1, id);
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Enseignant modifer avec succes");
+            JOptionPane.showMessageDialog(null, "Enseignant supprimer avec succes");
             name.setText("");
             surname.setText("");
             specialty.setText("");
@@ -259,6 +258,7 @@ public class Methodes {
             throw new RuntimeException(e);
         }
     }
+
 
     public static void searchEnseignant(Connection connection, JTable table, Boolean stf, String id, JTextField name, JTextField surname, JTextField specialty) {
         try {
@@ -297,12 +297,26 @@ public class Methodes {
         }
     }
 
-    public static void deleteEnseignant(Connection connection, JTable table, String id, JTextField name, JTextField surname, JTextField specialty) {
+    public static void updateEnseignant(Connection connection, JTable table, String id, JTextField name, JTextField surname, JTextField specialty) {
         try {
-            PreparedStatement pst = connection.prepareStatement("delete from enseignant where id_enseignant = ?");
-            pst.setString(1, id);
+            PreparedStatement pst = connection.prepareStatement("update enseignant set nom = ? ,prenom = ? ,specialite = ? where id_enseignant = ? ");
+            pst.setString(1, name.getText());
+            pst.setString(2, surname.getText());
+            pst.setString(3, specialty.getText());
+            pst.setString(4, id);
+            if (name.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "champ nom est vide!!");
+                return;
+
+            } else if (surname.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "champ prenome est vide!!");
+                return;
+            } else if (specialty.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "champ specialite est vide!!");
+                return;
+            }
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Enseignant supprimer avec succes");
+            JOptionPane.showMessageDialog(null, "Enseignant modifer avec succes");
             name.setText("");
             surname.setText("");
             specialty.setText("");
@@ -314,13 +328,17 @@ public class Methodes {
     }
 
 
-    public static void addLivre(Connection connection, JTable table, JTextField titre, JTextField auteur, JTextField annee, JTextField cote) {
+
+
+
+    public static void addLivre(Connection connection, JTable table, JTextField titre, JTextField auteur, JTextField annee, JTextField cote ,String dirct) {
         try {
-            PreparedStatement pst = connection.prepareStatement("insert into livre(titre,auteur,annee ,cote)values(?,?,?,?)");
+            PreparedStatement pst = connection.prepareStatement("insert into livre(titre,auteur,annee ,cote,emplacement)values(?,?,?,?,?)");
             pst.setString(1, titre.getText());
             pst.setString(2, auteur.getText());
             pst.setString(3, annee.getText());
             pst.setString(4, cote.getText());
+            pst.setString(5, dirct);
 
             pst.executeUpdate();
             titre.setText("");
@@ -334,14 +352,15 @@ public class Methodes {
         }
     }
 
-    public static void updateLivre(Connection connection, JTable table, String id, JTextField titre, JTextField auteur, JTextField annee, JTextField cote) {
+    public static void updateLivre(Connection connection, JTable table, String id, JTextField titre, JTextField auteur, JTextField annee, JTextField cote,String dirct) {
         try {
-        PreparedStatement pst = connection.prepareStatement("update livre set titre = ? , auteur = ? , annee = ? ,cote = ? where id_livre = ?");
+        PreparedStatement pst = connection.prepareStatement("update livre set titre = ? , auteur = ? , annee = ? ,cote = ? ,emplacement =? where id_livre = ?");
         pst.setString(1, titre.getText());
         pst.setString(2, auteur.getText());
         pst.setString(3, annee.getText());
         pst.setString(4, annee.getText());
-        pst.setString(5, id);
+        pst.setString(5,dirct);
+        pst.setString(6, id);
             if (titre.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Champ titre est vide!!");
                 return;
@@ -423,5 +442,48 @@ public class Methodes {
         annee.setText("");
         titre.requestFocus();
         fillTable("livre", connection, table);
+    }
+
+    public static List<JTextField> extractTextFields(JPanel container) {
+        ArrayList<JTextField> textFields = new ArrayList<>();
+        List<String> h = new ArrayList<String>();
+        Component[] components = container.getComponents();
+        for (Component component : components) {
+            if (component instanceof JTextField) {
+                textFields.add( (JTextField) component);
+            }
+        }
+
+        return textFields;
+    }
+
+    public static Path addpdfs(String folder){
+        JFileChooser fileChooser = new JFileChooser();
+
+        String pth = "";
+        Path destinationpath = Path.of("");
+        int respons =  fileChooser.showOpenDialog(null);
+        if (respons == JFileChooser.APPROVE_OPTION){
+            File file = new File (fileChooser.getSelectedFile().getAbsolutePath());
+            pth = fileChooser.getSelectedFile().getAbsolutePath();
+
+            System.out.println(pth);
+            Path surcpath = Paths.get(pth);
+            Path destpath = Paths.get("D:/IntelJProgrammes/IHM_Project/src/"+folder+"/");
+
+            try{
+                // Files.createDirectories(destpath);
+
+                destinationpath = destpath.resolve(surcpath.getFileName());
+
+                Files.copy(surcpath,destinationpath, StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("File copied successfuly to :" +destinationpath);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+
+        return destinationpath;
     }
 }
