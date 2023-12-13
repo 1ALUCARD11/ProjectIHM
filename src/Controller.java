@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.*;
 import java.util.List;
 
-public class Methodes {
+public class Controller {
+    public static ArrayList<Memoire> mr = new ArrayList<>();
+    public static ArrayList<Enseignant> ens = new ArrayList<>();
     public static Connection connect(String dbname) {
         Connection connection;
         try {
@@ -30,68 +32,36 @@ public class Methodes {
         return connection;
     }
 
-    public static void connect2() {
-        Connection connection;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/gestionbibliotheque", "root", "");
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("successe");
-
-        String url = "jdbc:mysql://localhost:3306/gestionbibliotheque";
-
-        String username = "root";
-
-        String password = "";
-
-        try {
-
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-
-            connection = null;
-
-            connection = DriverManager.getConnection(url, username, password);
-
-            Statement statement = null;
-
-            statement = connection.createStatement();
-
-
-            ResultSet resultSet = null;
-
-            resultSet = statement.executeQuery("select * from Enseignant");
-
-
-            // while (resultSet.next()) {
-
-
-            //   System.out.println(resultSet.getInt(1) + " " + resultSet.getString(2));
-
-
-            // }
-
-
-            connection.close();
-
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
-
     public static void fillTable(String tablename, Connection connection, JTable table) {
         String tmp = "select * from " + tablename;
         try {
             PreparedStatement pst = connection.prepareStatement(tmp);
             ResultSet rs = pst.executeQuery();
             table.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+    public static void fill() {
+        Connection connection = connect("gestionbibliotheque");
+        String tmp = "select id_memoire, titre as Titre,etudiants as 'Etudiants',annee 'Annee' ,cote as 'Cote',resume as 'Resume',id_enseignant as 'Enseignant',directoire from memoire ";
+        String tmp1 = "select id_enseignant, nom as 'Nom',prenom as 'Prenom',specialite as 'Specialite' from enseignant";
+        try {
+            PreparedStatement pst = connection.prepareStatement(tmp);
+            ResultSet rs = pst.executeQuery();
+            PreparedStatement pst1 = connection.prepareStatement(tmp1);
+            ResultSet rs1 = pst1.executeQuery();
+            while (rs.next()){
+                mr.add(new Memoire(rs.getInt(0),rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getInt(7)));
+
+            }
+            while (rs1.next()){
+                ens.add(new Enseignant(rs.getInt(0),rs.getString(1),rs.getString(2),rs.getString(3)));
+
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -394,13 +364,13 @@ public class Methodes {
 
     public static void updateLivre(Connection connection, JTable table, String id, JTextField titre, JTextField auteur, JTextField annee, JTextField cote,String dirct) {
         try {
-        PreparedStatement pst = connection.prepareStatement("update livre set titre = ? , auteur = ? , annee = ? ,cote = ? ,emplacement =? where id_livre = ?");
-        pst.setString(1, titre.getText());
-        pst.setString(2, auteur.getText());
-        pst.setString(3, annee.getText());
-        pst.setString(4, annee.getText());
-        pst.setString(5,dirct);
-        pst.setString(6, id);
+            PreparedStatement pst = connection.prepareStatement("update livre set titre = ? , auteur = ? , annee = ? ,cote = ? ,emplacement =? where id_livre = ?");
+            pst.setString(1, titre.getText());
+            pst.setString(2, auteur.getText());
+            pst.setString(3, annee.getText());
+            pst.setString(4, annee.getText());
+            pst.setString(5,dirct);
+            pst.setString(6, id);
             if (titre.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Champ titre est vide!!");
                 return;
@@ -468,8 +438,8 @@ public class Methodes {
 
     public static void deleteLivre(Connection connection ,JTable table ,String id ,JTextField titre, JTextField auteur, JTextField annee , JTextField cote){
         try {
-        PreparedStatement pst = connection.prepareStatement("delete from livre where id_livre = ?");
-        pst.setString(1,id);
+            PreparedStatement pst = connection.prepareStatement("delete from livre where id_livre = ?");
+            pst.setString(1,id);
 
             pst.executeUpdate();
         } catch (SQLException e) {
@@ -527,3 +497,4 @@ public class Methodes {
         return destinationpath;
     }
 }
+

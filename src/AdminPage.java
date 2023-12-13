@@ -1,104 +1,146 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
-import java.util.*;
-import java.util.List;
 
 public class AdminPage extends JFrame {
     Connection connection;
     PreparedStatement pst;
     String id,id_enseignant,id_livre;
-    private JPanel main_p;
-    private JButton livre_b;
-    private JButton ensignant_b;
-    private JButton memoire_b;
-    private JPanel card_p;
-    private JPanel memoires_p;
-    private JPanel enseignant_p;
-    private JPanel livres_p;
-    private JLabel titreprincipal_l;
-    private JPanel nav_p;
-    private JTextField titre_tf;
-    private JTextField cote_tf;
-    private JTextField resume_tf;
-    private JLabel titre_l;
-    private JTextField etudiants_tf;
-    private JTextField annee_tf;
-    private JTextField enseignant_tf;
-    private JTable memoires_t;
-    private JButton sauvegarde_b;
-    private JButton miseajour_b;
-    private JButton supprimer_b;
-    private JButton recherche_b;
-    private JTextField recherche_tf;
-    private JScrollPane table_scrollpane;
-    private JTextField nomens_tf;
-    private JTextField prenomens_tf;
-    private JTextField specens_tf;
-    private JTable enseignants_t;
-    private JButton ajouteens_b;
-    private JButton modifierens_b;
-    private JButton supprimerens_b;
-    private JButton rechercheens_b;
-    private JTextField recherchens_tf;
-    private JLabel nomens_l;
-    private JLabel prenomens_l;
-    private JLabel specens_l;
+    private JPanel main_p = new JPanel();
+    private JButton livre_b = new JButton("Gestion Livres");
+    private JButton ensignant_b = new JButton("Gestion Enseignant");
+    private JButton memoire_b= new JButton("Gestion Memoire");
+    private JPanel card_p = new JPanel();
+    private JPanel memoires_p = new JPanel();
+    private JPanel enseignant_p = new JPanel();
+    private JPanel livres_p= new JPanel();
+    private JLabel titreprincipal_l =new JLabel();
+    private JPanel nav_p = new JPanel();
+    private JTextField titre_tf = new JTextField(15);
+    private JLabel titre_l = new JLabel("Titre :");
+    private JTextField cote_tf = new JTextField(15);
+    private JLabel cote_l = new JLabel("La Cote");
+    private JTextField resume_tf = new JTextField(15);
+    private JLabel resume_l = new JLabel("Resume");
+
+    private JTextField etudiants_tf= new JTextField(15);
+    private JLabel etudiant_l = new JLabel("Etudiant");
+    private JTextField annee_tf= new JTextField(15);
+    private JLabel annee_l = new JLabel("Annee");
+    private JTextField enseignant_tf= new JTextField(15);
+    private JLabel enseignant_l = new JLabel("Enseignat");
+    private JTable memoires_t= new JTable();
+    private JButton sauvegarde_b = new JButton("Ajouter");
+    private JButton miseajour_b = new JButton("Mise a Jour");
+    private JButton supprimer_b =new JButton("Supprimer");
+    private JButton recherche_b= new JButton("Recherch");
+    private JTextField recherche_tf= new JTextField(15);
+    private JScrollPane scplivre;
+    private JTextField nomens_tf = new JTextField(15);
+    private JTextField prenomens_tf = new JTextField(15);
+    private JTextField specens_tf = new JTextField(15);
+    private JTable enseignants_t = new JTable();
+    private JButton ajouteens_b= new JButton("Ajouter");
+    private JButton modifierens_b= new JButton("Mise a Jour");
+    private JButton supprimerens_b= new JButton("Supprimer");
+    private JButton rechercheens_b= new JButton("Recherche");
+    private JTextField recherchens_tf = new JTextField();
+    private JLabel nomens_l = new JLabel("Nom :");
+    private JLabel prenomens_l = new JLabel("Prenom");
+    private JLabel specens_l = new JLabel("Specialite");
     private JScrollPane scrollpantens;
-    private JPanel modbuttons_p;
-    private JTextField titrelivre_tf;
-    private JTextField anneelivre_tf;
-    private JTextField auteurlivre_tf;
-    private JTextField cotelivre_tf;
-    private JLabel glivre_l;
-    private JTable livres_t;
-    private JButton ajouterPdfButton;
-    private JButton ajouterlivre_b;
-    private JButton supprimerlivre_b;
-    private JButton modifierButton;
-    private JButton recherchLivre_b;
-    private JTextField recherchlivre_tf;
-    private JLabel titrelivre_l;
-    private JLabel anneelivre_l;
-    private JLabel auterlivre_l;
-    private JLabel cotelivre_l;
-    private JButton ajouterPDFButton;
+    private JPanel modbuttons_p = new JPanel();
+    private JTextField titrelivre_tf= new JTextField(15);
+    private JTextField anneelivre_tf= new JTextField(15);
+    private JTextField auteurlivre_tf= new JTextField(15);
+    private JTextField cotelivre_tf= new JTextField(15);
+    private JLabel glivre_l = new JLabel("Gestion Livres ");
+    private JTable livres_t = new JTable();
+    private JButton ajouterPdfButton = new JButton("PDF");
+    private JButton ajouterlivre_b = new JButton("Ajouter");
+    private JButton supprimerlivre_b = new JButton("Supprimer");
+    private JButton modifierButton = new JButton("Mise A Jour");
+    private JButton recherchLivre_b= new JButton("Recherch");
+    private JTextField recherchlivre_tf = new JTextField(15);
+    private JLabel titrelivre_l= new JLabel("Titre :");
+    private JLabel anneelivre_l= new JLabel("Annee :");
+    private JLabel auterlivre_l= new JLabel("Autuer :");
+    private JLabel cotelivre_l= new JLabel("Cote");
+    private JButton ajouterPDFButton = new JButton("PDF");
+    private JPanel tlivre_p = new JPanel();
+    private JPanel tform_p = new JPanel();
+    private JPanel tserlivre_p = new JPanel();
+
+    GridBagConstraints gbc = new GridBagConstraints();
 
     private  JFileChooser pdfchooser;
 
     private Path thepath;
 
-    AdminPage() {
-
-
+    public AdminPage(){
         connection = Methodes.connect("gestionbibliotheque");
         Methodes.fillTable("memoire",connection, memoires_t);
+        Methodes.fillTable("livre",connection, livres_t);
+        Methodes.fillTable("enseignant",connection, enseignants_t);
         setTitle("Gestion des donnes ");
+        main_p.setLayout(new BorderLayout());
+        nav_p.setLayout(new FlowLayout(FlowLayout.CENTER,10,10));
 
-        setContentPane(main_p);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
+        nav_p.add(memoire_b);nav_p.add(livre_b);nav_p.add(ensignant_b);
+        nav_p.setBackground(Color.pink);
+        main_p.add(nav_p,BorderLayout.NORTH);
+        livres_p.setLayout(new GridLayout(1,2));
+        tform_p.setBackground(Color.darkGray);
+        tform_p.setLayout(new GridLayout(3,4));
 
-        memoires_t.setDefaultEditor(Object.class, null);
-        enseignants_t.setDefaultEditor(Object.class ,null);
-        livres_t.setDefaultEditor(Object.class,null);
+        tform_p.add(titre_l);
 
-        // ##################### Gestion des memoires ########################################
+        tform_p.add(titre_tf);
+
+
+        tform_p.add(etudiant_l);
+
+
+        tform_p.add(etudiants_tf);
+
+        tform_p.add(annee_l);
+
+
+        tform_p.add(annee_tf);
+
+
+        tform_p.add(cote_l);
+
+
+        tform_p.add(cote_tf);
+
+        tform_p.add(resume_l);
+
+
+        tform_p.add(resume_tf);
+
+
+        tform_p.add(enseignant_l);
+
+        tform_p.add(enseignant_tf);
+
+
+        livres_p.add(tform_p,0);
+        tlivre_p.setBackground(Color.CYAN);
+        tlivre_p.setLayout(new BorderLayout());
+        livres_p.add(tlivre_p,1);
+
+
+
+
+
+        card_p.add(livres_p,"livres");
+//        card_p.add(enseignant_p,"enseignants");
+//        card_p.add(memoires_p,"memoires");
         memoires_t.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int i = memoires_t.getSelectedRow();
@@ -134,189 +176,23 @@ public class AdminPage extends JFrame {
 
         });
 
+        scplivre= new JScrollPane(livres_t);
+        tlivre_p.add(scplivre,BorderLayout.CENTER);
+        JPanel tmp = new JPanel(new GridLayout(1,2));
+        tmp.add(recherchLivre_b);tmp.add(recherchlivre_tf);
+        tlivre_p.add(tmp,BorderLayout.SOUTH);
+        main_p.add(livres_p,BorderLayout.CENTER);
 
-        memoire_b.addActionListener(e -> {
-            CardLayout cardlayout = (CardLayout) card_p.getLayout();
-            cardlayout.show(card_p, "Card1");
-        });
+        setContentPane(main_p);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(new Dimension(800,800));
+        setLocationRelativeTo(null);
+        setVisible(true);
 
+        memoires_t.setDefaultEditor(Object.class, null);
+        enseignants_t.setDefaultEditor(Object.class ,null);
+        livres_t.setDefaultEditor(Object.class,null);
 
-        ensignant_b.addActionListener(e -> {
-            CardLayout cardlayout = (CardLayout) card_p.getLayout();
-            cardlayout.show(card_p, "Card2");
-        });
-
-
-        livre_b.addActionListener(e -> {
-            CardLayout cardlayout = (CardLayout) card_p.getLayout();
-            cardlayout.show(card_p, "Card3");
-        });
-
-
-        sauvegarde_b.addActionListener(e -> Methodes.addMemoire(connection,
-                memoires_t,
-                etudiants_tf,
-                titre_tf,
-                annee_tf,
-                cote_tf,
-                resume_tf,
-                enseignant_tf,
-                thepath.toString()));
-
-
-        recherche_b.addActionListener(e -> {
-            String id = recherche_tf.getText();
-            Methodes.searchMemoire(connection, memoires_t, id, recherche_tf.getText().isEmpty(), titre_tf, etudiants_tf, annee_tf, cote_tf, resume_tf, enseignant_tf);
-
-
-        });
-        miseajour_b.addActionListener(e -> {
-            String idm;
-            if (recherche_tf.getText().isEmpty()) {
-                idm = id;
-            } else idm = recherche_tf.getText();
-
-            Methodes.updateMemoire(connection, memoires_t, idm, titre_tf, etudiants_tf, annee_tf, cote_tf, resume_tf, enseignant_tf,thepath.toString());
-
-
-        });
-        supprimer_b.addActionListener(e -> {
-            String ids;
-            if (recherche_tf.getText().isEmpty()) {
-                ids = id;
-            } else ids = recherche_tf.getText();
-            Methodes.deleteMemoire(connection, memoires_t, ids, titre_tf, etudiants_tf, annee_tf, cote_tf, resume_tf, enseignant_tf);
-
-        });
-        // ##################### fin Gestion des memoires ########################################
-
-        // ##################### Gestion des Enseignants ########################################
-        Methodes.fillTable("enseignant",connection,enseignants_t);
-
-        ajouteens_b.addActionListener(e -> Methodes.addEnseignant(connection,enseignants_t,nomens_tf,prenomens_tf,specens_tf));
-
-        enseignants_t.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                int i = enseignants_t.getSelectedRow();
-                if (i != -1) {
-                    int id_int = (int) enseignants_t.getValueAt(i, 0);
-                    id_enseignant = String.valueOf(id_int);
-                    System.out.println("the id of the eneseisifsi si = " + id_enseignant);
-
-                }
-
-                try {
-                    pst = connection.prepareStatement("select nom,prenom,specialite from enseignant where id_enseignant = ? ");
-
-                    pst.setString(1, id_enseignant);
-                    ResultSet rs = pst.executeQuery();
-
-
-                    if (rs.next()) {
-                        nomens_tf.setText(rs.getString(1));
-                        prenomens_tf.setText(rs.getString(2));
-                        specens_tf.setText(rs.getString(3));
-
-                    }
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-
-            }
-
-
-        });
-
-
-        modifierens_b.addActionListener(e -> {
-            String id;
-            if (recherchens_tf.getText().isEmpty()){
-                id = id_enseignant;
-            }else id = recherchens_tf.getText();
-            Methodes.updateEnseignant(connection,enseignants_t,id,nomens_tf,prenomens_tf,specens_tf);
-
-        });
-        supprimerens_b.addActionListener(e -> Methodes.deleteEnseignant(connection,enseignants_t,id_enseignant,nomens_tf,prenomens_tf,specens_tf));
-        rechercheens_b.addActionListener(e -> {
-                String id = recherchens_tf.getText();
-                Methodes.searchEnseignant(connection,enseignants_t,recherchens_tf.getText().isEmpty(),id,nomens_tf,prenomens_tf,specens_tf);
-        });
-
-        // ##################### fin Gestion des Enseignants ########################################
-
-        // ##################### Gestion des livres ########################################
-            Methodes.fillTable("livre",connection,livres_t);
-        livres_t.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                int i = livres_t.getSelectedRow();
-                if (i != -1) {
-                    int id_int = (int) livres_t.getValueAt(i, 0);
-                    id_livre = String.valueOf(id_int);
-                    System.out.println(id + "   this is the id ");
-                }
-
-                try {
-                    pst = connection.prepareStatement("select titre,auteur,annee,cote from livre where id_livre = ? ");
-
-                    pst.setString(1, id_livre);
-                    ResultSet rs = pst.executeQuery();
-
-
-                    if (rs.next()) {
-                        titrelivre_tf.setText(rs.getString(1));
-                        auteurlivre_tf.setText(rs.getString(2));
-                        anneelivre_tf.setText(rs.getString(3));
-                        cotelivre_tf.setText(rs.getString(4));
-
-
-                    }
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-
-            }
-
-
-        });
-
-
-
-        ajouterlivre_b.addActionListener(e -> {
-
-            Methodes.addLivre(connection,livres_t,titrelivre_tf,auteurlivre_tf,anneelivre_tf,cotelivre_tf,thepath.toString());
-
-        });
-        modifierButton.addActionListener(e -> {
-            String idl;
-            if (recherchlivre_tf.getText().isEmpty()){
-                idl = id_livre;
-            }else idl =recherchlivre_tf.getText();
-            Methodes.updateLivre(connection,livres_t,idl,titrelivre_tf,auteurlivre_tf,anneelivre_tf,cotelivre_tf,thepath.toString());
-
-        });
-        supprimerlivre_b.addActionListener(e -> {
-            String idl;
-            if (recherchlivre_tf.getText().isEmpty()){
-                idl = id_livre;
-            }else idl =recherchlivre_tf.getText();
-            Methodes.deleteLivre(connection,livres_t,idl,titrelivre_tf,auteurlivre_tf,anneelivre_tf,cotelivre_tf);
-        });
-        recherchLivre_b.addActionListener(e -> {
-            String idl =recherchlivre_tf.getText();
-            Methodes.searchLivre(connection,livres_t,recherchlivre_tf.getText().isEmpty(),idl,titrelivre_tf,auteurlivre_tf,anneelivre_tf,cotelivre_tf);
-        });
-        ajouterPDFButton.addActionListener(e -> {
-            thepath = Methodes.addpdfs("Memoires");
-        });
-
-
-        ajouterPdfButton.addActionListener(e -> {
-            thepath = Methodes.addpdfs("Livres");
-        });
     }
-
-
 
 }
