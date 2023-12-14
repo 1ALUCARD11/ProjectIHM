@@ -1,3 +1,6 @@
+import net.proteanit.sql.DbUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -5,6 +8,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.Normalizer;
 import java.util.Objects;
 
 public class MainPanel extends JFrame {
@@ -44,6 +50,9 @@ public class MainPanel extends JFrame {
     private final JTable memoiresTable = new JTable();
     private final JTable enseignantTable = new JTable();
     private final JTable livresTable = new JTable();
+
+    private int currentCard=0;
+    private ResultSet rs;
 
     private final Connection connection;
 
@@ -118,14 +127,17 @@ public class MainPanel extends JFrame {
         livres_b.addActionListener(e -> {
             CardLayout cardlayout = (CardLayout) cardpanel.getLayout();
             cardlayout.show(cardpanel, "Livres");
-        });
-        enseignant_b.addActionListener(e -> {
-            CardLayout cardlayout = (CardLayout) cardpanel.getLayout();
-            cardlayout.show(cardpanel, "Enseignant");
+            currentCard=0;
         });
         memoire_b.addActionListener(e -> {
             CardLayout cardlayout = (CardLayout) cardpanel.getLayout();
             cardlayout.show(cardpanel, "Memoires");
+            currentCard=1;
+        });
+        enseignant_b.addActionListener(e -> {
+            CardLayout cardlayout = (CardLayout) cardpanel.getLayout();
+            cardlayout.show(cardpanel, "Enseignant");
+            currentCard=2;
         });
         accueil_b.addActionListener(e -> {
             CardLayout cardlayout = (CardLayout) cardpanel.getLayout();
@@ -170,8 +182,17 @@ public class MainPanel extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // Action à effectuer lors du clic sur l'icône de recherche
-                // Par exemple, lancer la recherche ici
-                System.out.println("Search Icon Clicked");
+                System.out.println("Search Icon Clicked and current : " + currentCard);
+                String critere= Objects.requireNonNull(filterComboBox.getSelectedItem()).toString().toLowerCase();
+                String texte= recherchtf.getText();
+                critere= StringUtils.stripAccents(critere);
+
+                try {
+                    Methodes.rechercheCritere(currentCard,critere,texte,table);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+
             }
         });
 

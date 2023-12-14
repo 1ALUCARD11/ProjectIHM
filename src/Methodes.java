@@ -99,7 +99,7 @@ public class Methodes {
 
     }
     public static void fillmemoiretable( Connection connection, JTable table) {
-        String tmp = "select titre as Titre,etudiants as 'Etudiants',annee 'Annee' ,cote as 'Cote',resume as 'Resume',id_enseignant as 'Enseignant' from memoire ";
+        String tmp = "select m.titre as Titre,m.etudiants as 'Etudiants',m.annee 'Annee' ,m.cote as 'Cote',m.resume as 'Resume',e.nom as 'Enseignant' from memoire m, enseignant e where e.id_enseignant=m.id_enseignant ";
         try {
             PreparedStatement pst = connection.prepareStatement(tmp);
             ResultSet rs = pst.executeQuery();
@@ -527,5 +527,35 @@ public class Methodes {
 
 
         return destinationpath;
+    }
+
+    public static void rechercheCritere(int currentCard,String critere,String texte,JTable table) throws SQLException{
+        Connection connection=connect("gestionbibliotheque");
+        ResultSet rs;
+        PreparedStatement ps;
+            switch (currentCard) {
+                case 1:
+                    ps = connection.prepareStatement("select m.titre as Titre,m.etudiants as 'Etudiants',m.annee 'Annee' ,m.cote as 'Cote',m.resume as 'Resume',e.nom as 'Enseignant' from memoire m, enseignant e where e.id_enseignant=m.id_enseignant AND "+critere+" LIKE '%"+texte+"%'");
+                    break;
+                case 2:
+                    ps = connection.prepareStatement("select nom as 'Nom',prenom as 'Prenom',specialite as 'Specialite' from enseignant WHERE "+critere+" LIKE '%"+texte+"%'");
+                    break;
+                default:
+                    ps = connection.prepareStatement("select titre as 'Titre',auteur as 'Auter',annee as 'Annee',cote 'LaCote' from livre WHERE "+critere+" LIKE '%"+texte+"%'");
+                    break;
+
+
+            }
+            /*ps.setString(1, critere);
+            ps.setString(2, "%" + texte + "%");*/
+
+            rs = ps.executeQuery();
+        if (!rs.isBeforeFirst()) {
+            JOptionPane.showMessageDialog(null, "Aucun résultat correspondant a votre Recherche", "Résultat Recherche", JOptionPane.WARNING_MESSAGE);
+
+        }
+        else{
+            table.setModel(DbUtils.resultSetToTableModel(rs));
+        }
     }
 }

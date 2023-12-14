@@ -651,7 +651,7 @@ public class AdminPage extends JFrame {
 
 
         setContentPane(main_p);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(new Dimension(800,800));
         setLocationRelativeTo(null);
         setVisible(true);
