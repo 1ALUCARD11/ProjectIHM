@@ -60,6 +60,9 @@ public class AdminPage extends JFrame {
 
     public AdminPage(){
         connection = Methodes.connect("gestionbibliotheque");
+        memoires_t.setRowHeight(20);
+        livresTable_t.setRowHeight(20);
+        enseignantsTable_t.setRowHeight(20);
         Methodes.fillTable("memoire",connection, memoires_t);
         Methodes.fillTable("livre",connection, livresTable_t);
         Methodes.fillTable("enseignant",connection, enseignantsTable_t);
@@ -122,6 +125,8 @@ public class AdminPage extends JFrame {
         enseignantForm_p.setBorder(new EmptyBorder(5,5,5,5));
 
         JLabel nomEnseignant_l = new JLabel("Nom ");
+        nomEnseignant_l.setLabelFor(nomEnseignant_tf);
+        nomEnseignant_l.setDisplayedMnemonic('n');
         nomEnseignant_l.setPreferredSize(new Dimension(200,50));
         enseignantForm_p.add(nomEnseignant_l);
         nomEnseignant_tf.setMaximumSize(new Dimension(700,100));
@@ -238,7 +243,7 @@ public class AdminPage extends JFrame {
         });
         modifierEnseignant_b.addActionListener(e -> {
             String id;
-            if (rechercheEnseignant_b.getText().isEmpty()){
+            if (recherchEnseignant_tf.getText().isEmpty()){
                 id = id_enseignant;
             }else id = recherchEnseignant_tf.getText();
             Methodes.updateEnseignant(connection,enseignantsTable_t,id,nomEnseignant_tf,preEnseignant_tf,specEnseignant_tf);

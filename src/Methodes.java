@@ -295,6 +295,8 @@ public class Methodes {
             name.requestFocus();
             fillTable("enseignant", connection, table);
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,"Enseignant exist dans une memoire ","error",JOptionPane.ERROR_MESSAGE);
+
             throw new RuntimeException(e);
         }
     }
