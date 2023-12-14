@@ -30,7 +30,7 @@ public class LoginPage extends JFrame implements ActionListener {
                 if (login.get(id).equals(password)){
 
                    // message_l.setText("");
-                    new AdminPage1();
+                    new AdminPage();
                     dispose();
                 }
                 else {
