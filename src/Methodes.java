@@ -559,4 +559,17 @@ public class Methodes {
             table.setModel(DbUtils.resultSetToTableModel(rs));
         }
     }
+
+    public static void affichagePDF(String t) throws SQLException, IOException {
+        Connection connection=connect("gestionbibliotheque");
+        PreparedStatement ps= connection.prepareStatement("SELECT directoire FROM memoire where titre = ?");
+        ps.setString(1,t);
+        ResultSet rs= ps.executeQuery();
+        rs.next();
+        String path= rs.getString(1);
+        Desktop desktop=Desktop.getDesktop();
+        File file=new File(path);
+        desktop.open(file);
+
+    }
 }

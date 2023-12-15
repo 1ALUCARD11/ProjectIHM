@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -380,6 +381,7 @@ mainpanel.add(southP, BorderLayout.SOUTH);
                 JFrame detailsFrame = new JFrame("Détails");
                 detailsFrame.setLayout(new BorderLayout());
                 JPanel detailsPanel = new JPanel();
+                JButton pdfButton=new JButton("View PDF");
                 detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
                 detailsPanel.setBackground(new Color(0xEAE7E5));
 
@@ -401,11 +403,23 @@ mainpanel.add(southP, BorderLayout.SOUTH);
                     // Ajouter une ligne séparatrice après chaque paire titre-zone de texte
                     detailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
                 }
+                if(currentCard==1) {
+                    pdfButton.addActionListener(e -> {
+                        String t= String.valueOf(rowData[0]);
+                        try {
+                            Methodes.affichagePDF(t);
+                        } catch (SQLException | IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    });
+                    detailsPanel.add(pdfButton);
+                }
 
                 detailsFrame.add(detailsPanel, BorderLayout.CENTER);
 
                 detailsFrame.setSize(400, 300);
                 detailsFrame.setLocationRelativeTo(this);
+                detailsFrame.pack();
                 detailsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 detailsFrame.setVisible(true);
             } else {
