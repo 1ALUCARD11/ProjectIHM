@@ -36,7 +36,7 @@ public class Methodes {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
 
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/gestionbibliotheque", "root", "");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/gestionbibliotheque", "root", "1234");
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -46,7 +46,7 @@ public class Methodes {
 
         String username = "root";
 
-        String password = "";
+        String password = "1234";
 
         try {
 
@@ -541,7 +541,7 @@ public class Methodes {
                     ps = connection.prepareStatement("select nom as 'Nom',prenom as 'Prenom',specialite as 'Specialite' from enseignant WHERE "+critere+" LIKE '%"+texte+"%'");
                     break;
                 default:
-                    ps = connection.prepareStatement("select titre as 'Titre',auteur as 'Auter',annee as 'Annee',cote 'LaCote' from livre WHERE "+critere+" LIKE '%"+texte+"%'");
+                    ps = connection.prepareStatement("select titre as 'Titre',auteur as 'Auteur',annee as 'Annee',cote as 'Cote' from livre WHERE "+critere+" LIKE '%"+texte+"%'");
                     break;
 
 

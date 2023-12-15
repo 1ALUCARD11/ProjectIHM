@@ -160,7 +160,6 @@ public class AdminPage extends JFrame {
         enseignant_p.add(enseignantTable_p,1);
 
 
-
         enseignantForm_p.add(Box.createGlue());
         JPanel s = new JPanel(new GridLayout(1,3));
         s.setPreferredSize(new Dimension(500,40));
@@ -173,13 +172,6 @@ public class AdminPage extends JFrame {
         JButton modifierEnseignant_b = new JButton("Mise a Jour");
         s.add(modifierEnseignant_b);
         enseignantForm_p.add(s);
-
-
-
-
-
-
-
 
         enseignantsTable_t.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
@@ -335,14 +327,6 @@ public class AdminPage extends JFrame {
         JButton miseajourLivre_b = new JButton("Mise A Jour");
         sp.add(miseajourLivre_b);
         livreForm_p.add(sp);
-
-
-
-
-
-
-
-
         livresTable_t.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int i = livresTable_t.getSelectedRow();
@@ -371,10 +355,7 @@ public class AdminPage extends JFrame {
                     throw new RuntimeException(ex);
                 }
 
-
-
             }
-
 
         });
 
@@ -385,21 +366,13 @@ public class AdminPage extends JFrame {
         t.add(recherchLivre_b);t.add(recherchLivre_tf);
         livreTable_p.add(t,BorderLayout.SOUTH);
 
-
-
-
-
         livresTable_t.setDefaultEditor(Object.class,null);
         livre_b.addActionListener(e -> {
             CardLayout cardlayout = (CardLayout) card_p.getLayout();
             cardlayout.show(card_p, "livres");
         });
 
-
-
-
         sauvegardeLivre_b.addActionListener(e -> Methodes.addLivre(connection,livresTable_t,titreLivre_tf,auteurLivre_tf,anneeLivre_tf,coteLivre_tf,thepath.toString()));
-
 
         recherchLivre_b.addActionListener(e -> {
             System.out.println("the button is buttining");
@@ -423,13 +396,8 @@ public class AdminPage extends JFrame {
         });
 
         ajouterLivrePdf_b.addActionListener(e -> thepath = Methodes.addpdfs("Livres"));
-
-
-
         /* ################################ MEMOIRE PART #########################################################*/
-
         memoires_p.setLayout(new GridLayout(1,1));
-
         JPanel memoireForm_p = new JPanel();
         memoireForm_p.setLayout(new BoxLayout(memoireForm_p,BoxLayout.PAGE_AXIS));
         memoireForm_p.setBorder(new EmptyBorder(5,5,5,5));
@@ -439,59 +407,41 @@ public class AdminPage extends JFrame {
         titre_tf.setMaximumSize(new Dimension(700,100));
         titre_tf.setPreferredSize(new Dimension(200,40));
         memoireForm_p.add(titre_tf);
-
         JLabel etudiant_l = new JLabel("Etudiant");
         etudiant_l.setPreferredSize(new Dimension(200,50));
         memoireForm_p.add(etudiant_l);
         etudiants_tf.setMaximumSize(new Dimension(700,100));
         etudiants_tf.setPreferredSize(new Dimension(200,40));
-
         memoireForm_p.add(etudiants_tf);
-
         JLabel annee_l = new JLabel("Annee");
         annee_l.setPreferredSize(new Dimension(200,50));
-
         memoireForm_p.add(annee_l);
-
         annee_tf.setMaximumSize(new Dimension(700,100));
         annee_tf.setPreferredSize(new Dimension(200,40));
-
         memoireForm_p.add(annee_tf);
-
         JLabel cote_l = new JLabel("La Cote");
         cote_l.setPreferredSize(new Dimension(200,50));
-
         memoireForm_p.add(cote_l);
         cote_tf.setMaximumSize(new Dimension(700,100));
         cote_tf.setPreferredSize(new Dimension(200,40));
-
         memoireForm_p.add(cote_tf);
-
         JLabel resume_l = new JLabel("Resume");
         resume_l.setPreferredSize(new Dimension(200,50));
-
         memoireForm_p.add(resume_l);
-
         resume_tf.setMaximumSize(new Dimension(700,100));
         resume_tf.setPreferredSize(new Dimension(200,40));
-
         memoireForm_p.add(resume_tf);
-
         JLabel enseignant_l = new JLabel("Enseignat");
         enseignant_l.setPreferredSize(new Dimension(200,50));
-
         memoireForm_p.add(enseignant_l);
         enseignant_tf.setMaximumSize(new Dimension(700,100));
         enseignant_tf.setPreferredSize(new Dimension(200,40));
         memoireForm_p.add(enseignant_tf);
-
-
         memoires_p.add(memoireForm_p,0);
         JPanel memoireTable_p = new JPanel();
         memoireTable_p.setLayout(new BorderLayout());
         memoireTable_p.setBorder(new EmptyBorder(5,5,5,5));
         memoires_p.add(memoireTable_p,1);
-
         JPanel b4 = new JPanel(new GridLayout(1,1));
         b4.setBorder(new EmptyBorder(5,5,5,5));
         JButton ajouterMemoirePDF_b = new JButton("PDF");
@@ -511,14 +461,6 @@ public class AdminPage extends JFrame {
         JButton miseajourMemoire_b = new JButton("Mise a Jour");
         sub_p.add(miseajourMemoire_b);
         memoireForm_p.add(sub_p);
-
-
-
-
-
-
-
-
         memoires_t.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int i = memoires_t.getSelectedRow();
@@ -527,14 +469,10 @@ public class AdminPage extends JFrame {
                     id = String.valueOf(id_int);
                     System.out.println(id + " this is the id ");
                 }
-
                 try {
                     pst = connection.prepareStatement("select titre,etudiants,cote,resume,id_enseignant,annee from memoire where id_memoire = ? ");
-
                     pst.setString(1, id);
                     ResultSet rs = pst.executeQuery();
-
-
                     if (rs.next()) {
                         titre_tf.setText(rs.getString(1));
                         etudiants_tf.setText(rs.getString(2));
@@ -542,39 +480,24 @@ public class AdminPage extends JFrame {
                         resume_tf.setText(rs.getString(4));
                         enseignant_tf.setText(rs.getString(5));
                         annee_tf.setText(rs.getString(6));
-
                     }
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
-
-
             }
-
-
         });
-
         JScrollPane scpMemoire = new JScrollPane(memoires_t);
         memoireTable_p.add(scpMemoire,BorderLayout.CENTER);
         JPanel tmp = new JPanel(new GridLayout(1,2));
         JButton rechercheMemoire_b = new JButton("Recherch");
         tmp.add(rechercheMemoire_b);tmp.add(rechercheMemoire_tf);
         memoireTable_p.add(tmp,BorderLayout.SOUTH);
-
-
-
-
-
-
         memoires_t.setDefaultEditor(Object.class, null);
 
         memoire_b.addActionListener(e -> {
             CardLayout cardlayout = (CardLayout) card_p.getLayout();
             cardlayout.show(card_p, "memoires");
         });
-
-
-
 
         sauvegardeMemoire_b.addActionListener(e -> Methodes.addMemoire(connection,
                 memoires_t,
@@ -585,8 +508,6 @@ public class AdminPage extends JFrame {
                 resume_tf,
                 enseignant_tf,
                 thepath.toString()));
-
-
 
         rechercheMemoire_b.addActionListener(e -> {
             String id = rechercheMemoire_tf.getText();
@@ -602,7 +523,6 @@ public class AdminPage extends JFrame {
 
             Methodes.updateMemoire(connection, memoires_t, idm, titre_tf, etudiants_tf, annee_tf, cote_tf, resume_tf, enseignant_tf,thepath.toString());
 
-
         });
         supprimerMemoire_b.addActionListener(e -> {
             String ids;
@@ -617,46 +537,12 @@ public class AdminPage extends JFrame {
 
         // ##################### END OF MEMOIRE PANEL ##########################################################
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         main_p.add(card_p,BorderLayout.CENTER);
         enseignantsTable_t.setDefaultEditor(Object.class ,null);
-
-
-
-
         setContentPane(main_p);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(new Dimension(800,800));
         setLocationRelativeTo(null);
         setVisible(true);
     }
-
-
-
 }

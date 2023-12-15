@@ -23,7 +23,7 @@ public class Controller {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dburl = "jdbc:mysql://localhost/" + dbname;
 
-            connection = DriverManager.getConnection(dburl, "root", "");
+            connection = DriverManager.getConnection(dburl, "root", "1234");
         } catch (
                 SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);

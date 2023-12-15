@@ -5,6 +5,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
@@ -14,8 +16,11 @@ import java.text.Normalizer;
 import java.util.Objects;
 
 public class MainPanel extends JFrame {
+    private final JButton detailsButton = new JButton("DETAILS");
+
     GridBagConstraints gbc = new GridBagConstraints();
     private final JPanel mainpanel = new JPanel();
+    private JTable currentTable;  // Tableau actuellement affiché
     private final JPanel toppartpanel = new JPanel();
     private final JPanel nav_panel = new JPanel();
     private final JPanel header_panel = new JPanel();
@@ -30,7 +35,7 @@ public class MainPanel extends JFrame {
     private final JPanel tabmem_p = new JPanel();
     private final JPanel accueil_p = new JPanel();
     private final JPanel cardpanel = new JPanel();
-    private final JButton admin_b = new JButton("ADMIN");
+    private final JButton admin_b = new JButton("Se connecter (Administrateur)");
     private final JButton livres_b = new JButton("LIVRES");
     private final JButton enseignant_b = new JButton("ENSEIGNANTS");
     private final JButton memoire_b = new JButton("MEMOIRES");
@@ -43,9 +48,9 @@ public class MainPanel extends JFrame {
 
     private final JButton rechmemoire_b = new JButton("Recherche");
     private final JTextField rechmemoire_tf = new JTextField(15);
-    private final JLabel resultat = new JLabel("RESULTAT");
-    private final JLabel resultat1 = new JLabel("RESULTAT");
-    private final JLabel resultat2 = new JLabel("RESULTAT");
+    private final JLabel resultat = new JLabel("Resultat de la recherche");
+    private final JLabel resultat1 = new JLabel("Resultat de la recherche");
+    private final JLabel resultat2 = new JLabel("Resultat de la recherche");
 
     private final JTable memoiresTable = new JTable();
     private final JTable enseignantTable = new JTable();
@@ -66,34 +71,39 @@ public class MainPanel extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
 
         JPanel topPartPanel = new JPanel(new BorderLayout());
-        JLabel logoLabel = new JLabel("test");
-        topPartPanel.add(logoLabel);
+       ImageIcon logo = new ImageIcon("src/logo.png");
+        int logoWidth = (int) (logo.getIconWidth());
+        int logoHeight = (int) (logo.getIconHeight());
+
+        Image imageLogo1 = logo.getImage().getScaledInstance(logoWidth,
+                logoHeight,
+                Image.SCALE_SMOOTH); // Utilisation de SCALE_SMOOTH
+        ImageIcon logo1 = new ImageIcon(imageLogo1);
+        JLabel logoLabel = new JLabel(logo1);
+
+
         JPanel adminPanel = new JPanel();
         adminPanel.add(admin_b);
+        adminPanel.setBackground(Color.WHITE);
         topPartPanel.add(adminPanel, BorderLayout.EAST);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        nav_panel.add(topPartPanel, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.WEST;
+        topPartPanel.setBackground(Color.WHITE);
+        topPartPanel.setSize(500,500);
 
         header_panel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
 
         header_panel.add(livres_b);
         header_panel.add(memoire_b);
         header_panel.add(enseignant_b);
-        toppartpanel.setLayout(new GridLayout(2, 1));
-        toppartpanel.add(nav_panel);
-        toppartpanel.add(header_panel);
+
+        toppartpanel.setLayout(new BorderLayout());
+        toppartpanel.add(topPartPanel,BorderLayout.NORTH);
+        toppartpanel.add(header_panel,BorderLayout.SOUTH);
         toppartpanel.setSize(500, 500);
         toppartpanel.setBackground(Color.white);
 
         cardpanel.setLayout(new CardLayout());
 
-        JComboBox<String> typeRechercheLivres = new JComboBox<>(new String[]{"Titre", "Auteur", "Année", "Cote", "Emplacement"});
+        JComboBox<String> typeRechercheLivres = new JComboBox<>(new String[]{"Titre", "Auteur", "Année", "Cote"});
 
         createDataPanel(livre_p, recherchlivre_p, tablivre_p, resultat, rechlivre_tf, rechlivre_b, livresTable, "livre",typeRechercheLivres);
         cardpanel.add(livre_p, "Livres");
@@ -104,7 +114,7 @@ public class MainPanel extends JFrame {
         createDataPanel(enseignant_p, recherchens_p, tabens_p, resultat1, rechens_tf, rechens_b, enseignantTable, "enseignant",typeRechercheEnseignants);
         cardpanel.add(enseignant_p, "Enseignant");
 
-        JComboBox<String> typeRechercheMemoires = new JComboBox<>(new String[]{"Titre", "Étudiants", "Année", "Spécialité", "Encadreur", "Cote", "Mots clés", "Détails"});
+        JComboBox<String> typeRechercheMemoires = new JComboBox<>(new String[]{"Titre", "Étudiants", "Année", "Encadreur", "Cote", "Résumé"});
 
 
         createDataPanel(memoires_p, recherchmem_p, tabmem_p, resultat2, rechmemoire_tf, rechmemoire_b, memoiresTable, "memoire",typeRechercheMemoires);
@@ -143,7 +153,26 @@ public class MainPanel extends JFrame {
             CardLayout cardlayout = (CardLayout) cardpanel.getLayout();
             cardlayout.show(cardpanel, "Accueil");
         });
+
+        detailsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showDetails();
+            }
+        });
+        JPanel southP = new JPanel();
+        southP.setLayout(new BorderLayout());
+        JLabel labelDetails = new JLabel("Veuileez cliquer sur une ligne puis sur le bouton details");
+        labelDetails.setFont(new Font("Montserrat", Font.ITALIC, 12));
+
+        detailsButton.setBackground(Color.white);
+        detailsButton.setFont(new Font("Bebas Neue", Font.PLAIN, 19));
+        southP.add(labelDetails, BorderLayout.SOUTH);
+        southP.add(detailsButton, BorderLayout.CENTER);
+        southP.setBackground(Color.white);
+mainpanel.add(southP, BorderLayout.SOUTH);
         applyModernDesign();  // Nouvelle méthode pour appliquer le design moderne
+        this.setBackground(Color.WHITE);
     }
 
     private void createDataPanel(JPanel mpan, JPanel searchpan, JPanel tablepan,JLabel resultat, JTextField recherchtf, JButton button, JTable table,String check,JComboBox<String> filterComboBox) {
@@ -186,6 +215,8 @@ public class MainPanel extends JFrame {
                 String critere= Objects.requireNonNull(filterComboBox.getSelectedItem()).toString().toLowerCase();
                 String texte= recherchtf.getText();
                 critere= StringUtils.stripAccents(critere);
+                if(Objects.equals(critere, "encadreur"))
+                    critere="nom";
 
                 try {
                     Methodes.rechercheCritere(currentCard,critere,texte,table);
@@ -209,12 +240,19 @@ public class MainPanel extends JFrame {
         filterPanel.add(filterComboBox, BorderLayout.CENTER);
 // DE ICI JUSQU A
         // Ajout des composants a la zone de recherche
-        searchpan.add(searchIconLabel, BorderLayout.WEST);
+        JLabel searchLabel = new JLabel("Qu'est ce que vous recherchez ?");
+        searchLabel.setFont(new Font("Montserrat", Font.BOLD, 18));
+        searchpan.add(searchLabel, BorderLayout.NORTH);
+        searchpan.add(searchIconLabel, BorderLayout.EAST);
         searchpan.add(recherchtf, BorderLayout.CENTER);
-        searchpan.add(filterPanel, BorderLayout.EAST);
+        searchpan.add(filterPanel, BorderLayout.WEST);
+        searchpan.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
 
         // Ajout de la zone de recherche au panel principal
         mpan.add(searchpan, BorderLayout.NORTH);
+        mpan.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
         // Fin des modifications de la section RECHERCHER
 
         // Ajout de la section RESULTAT
@@ -239,8 +277,11 @@ public class MainPanel extends JFrame {
         // Fin de la section RESULTAT
 
 
-        tablepan.setLayout(new GridLayout(2, 1));
-        tablepan.add(resultat);
+        tablepan.setLayout(new BorderLayout());
+        resultat.setFont(new Font("Montserrat", Font.BOLD, 18));
+        tablepan.add(resultat, BorderLayout.NORTH);
+        tablepan.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+
         table.setDefaultEditor(Object.class, null);
 
 
@@ -248,13 +289,14 @@ public class MainPanel extends JFrame {
         tablepan.add(sp);
         mpan.add(tablepan, BorderLayout.CENTER);
 
-        admin_b.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-        admin_b.setBackground(Color.WHITE);
         admin_b.setOpaque(true);
+        admin_b.setBorderPainted(false); // Enlever les bordures
 
-        admin_b.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, true));
+      //  admin_b.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
         admin_b.setFocusPainted(false);
-        admin_b.setFont(new Font("Montserrat", Font.PLAIN, 14));
+        admin_b.setBackground(new Color(0x2D7E2D));  // Green background
+        admin_b.setForeground(Color.WHITE);
+        admin_b.setFont(new Font("Montserrat", Font.BOLD, 12));
 
         Font montserratFont = new Font("Bebas Neue", Font.PLAIN, 25);
 
@@ -289,6 +331,16 @@ public class MainPanel extends JFrame {
         livres_b.setPreferredSize(buttonSize);
         memoire_b.setPreferredSize(buttonSize);
         enseignant_b.setPreferredSize(buttonSize);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        ListSelectionModel selectionModel = table.getSelectionModel();
+        selectionModel.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                // Mettre à jour la table actuelle lors de la sélection
+                currentTable = table;
+            }
+        });
+
     }
 
     private void applyModernDesign() {
@@ -312,6 +364,54 @@ public class MainPanel extends JFrame {
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         table.setDefaultRenderer(Object.class,
                 new CustomTableCellRenderer());
+
+    }
+
+    private void showDetails() {
+        if (currentTable != null) {
+            int selectedRow = currentTable.getSelectedRow();
+
+            if (selectedRow != -1) {
+                Object[] rowData = new Object[currentTable.getColumnCount()];
+                for (int i = 0; i < currentTable.getColumnCount(); i++) {
+                    rowData[i] = currentTable.getValueAt(selectedRow, i);
+                }
+
+                JFrame detailsFrame = new JFrame("Détails");
+                detailsFrame.setLayout(new BorderLayout());
+                JPanel detailsPanel = new JPanel();
+                detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
+                detailsPanel.setBackground(new Color(0xEAE7E5));
+
+                for (int i = 0; i < rowData.length; i++) {
+                    JLabel titleLabel = new JLabel(currentTable.getColumnName(i));
+                    titleLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 16));
+                   // titleLabel.setForeground(Color.WHITE);
+                    detailsPanel.add(titleLabel);
+
+                    JTextArea textArea = new JTextArea(String.valueOf(rowData[i]));
+                    textArea.setFont(new Font("Montserrat", Font.PLAIN, 14));
+                    textArea.setLineWrap(true);
+                    textArea.setWrapStyleWord(true);
+                    textArea.setEditable(false);
+
+                    JScrollPane scrollPane = new JScrollPane(textArea);
+                    detailsPanel.add(scrollPane);
+
+                    // Ajouter une ligne séparatrice après chaque paire titre-zone de texte
+                    detailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+                }
+
+                detailsFrame.add(detailsPanel, BorderLayout.CENTER);
+
+                detailsFrame.setSize(400, 300);
+                detailsFrame.setLocationRelativeTo(this);
+                detailsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                detailsFrame.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Veuillez sélectionner une ligne avant de voir les détails.", "Avertissement", JOptionPane.WARNING_MESSAGE);
+            }
+        }
     }
 
 }
