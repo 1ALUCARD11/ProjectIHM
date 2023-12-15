@@ -499,7 +499,7 @@ public class Methodes {
         return textFields;
     }
 
-    public static Path addpdfs(String folder){
+    public static Path addpdfs(String folder ,String filename){
         JFileChooser fileChooser = new JFileChooser();
 
         String pth = "";
@@ -511,12 +511,13 @@ public class Methodes {
 
             System.out.println(pth);
             Path surcpath = Paths.get(pth);
-            Path destpath = Paths.get("D:/IntelJProgrammes/IHM_Project/src/"+folder+"/");
+            Path destpath = Paths.get("src/"+folder+"/");
 
             try{
                 // Files.createDirectories(destpath);
+                System.out.printf(String.valueOf(surcpath.getFileName())+"hello ");
 
-                destinationpath = destpath.resolve(surcpath.getFileName());
+                destinationpath = destpath.resolve(filename+".pdf");
 
                 Files.copy(surcpath,destinationpath, StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("File copied successfuly to :" +destinationpath);

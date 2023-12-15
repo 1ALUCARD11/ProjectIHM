@@ -395,7 +395,7 @@ public class AdminPage extends JFrame {
             Methodes.deleteLivre(connection,livresTable_t,idl,titreLivre_tf,auteurLivre_tf,anneeLivre_tf,coteLivre_tf);
         });
 
-        ajouterLivrePdf_b.addActionListener(e -> thepath = Methodes.addpdfs("Livres"));
+        ajouterLivrePdf_b.addActionListener(e -> thepath = Methodes.addpdfs("Livres",titreLivre_tf.getText()));
         /* ################################ MEMOIRE PART #########################################################*/
         memoires_p.setLayout(new GridLayout(1,1));
         JPanel memoireForm_p = new JPanel();
@@ -533,7 +533,7 @@ public class AdminPage extends JFrame {
 
         });
 
-        ajouterMemoirePDF_b.addActionListener(e -> thepath = Methodes.addpdfs("Memoires"));
+        ajouterMemoirePDF_b.addActionListener(e -> thepath = Methodes.addpdfs("Memoires",titre_tf.getText()));
 
         // ##################### END OF MEMOIRE PANEL ##########################################################
 
