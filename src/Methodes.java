@@ -159,6 +159,8 @@ public class Methodes {
             id_ens.setText("");
             titre.requestFocus();
             fillTable("memoire", connection, table);
+            fillmemoiretable(connection,MainPanel.memoiresTable);
+
 
         } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -185,6 +187,7 @@ public class Methodes {
             throw new RuntimeException(ex);
         }
         fillTable("memoire", connection, table);
+        fillmemoiretable(connection,MainPanel.memoiresTable);
     }
 
 
@@ -255,6 +258,7 @@ public class Methodes {
             id_ens.setText("");
             titre.requestFocus();
             fillTable("memoire", connection, table);
+            fillmemoiretable(connection,MainPanel.memoiresTable);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -274,6 +278,7 @@ public class Methodes {
             pst.executeUpdate();
 
             fillTable("enseignant", connection, table);
+            fillensetable(connection,MainPanel.enseignantTable);
             JOptionPane.showMessageDialog(null, "Enseignant ajouter avec succes");
             name.setText("");
             surname.setText("");
@@ -294,6 +299,7 @@ public class Methodes {
             specialty.setText("");
             name.requestFocus();
             fillTable("enseignant", connection, table);
+            fillensetable(connection,MainPanel.enseignantTable);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null,"Enseignant exist dans une memoire ","error",JOptionPane.ERROR_MESSAGE);
 
@@ -321,6 +327,7 @@ public class Methodes {
                 name.setText(rs.getString(1));
                 surname.setText(rs.getString(2));
                 specialty.setText(rs.getString(3));
+
 
 
             } else {
@@ -364,6 +371,7 @@ public class Methodes {
             specialty.setText("");
             name.requestFocus();
             fillTable("enseignant", connection, table);
+            fillensetable(connection,MainPanel.enseignantTable);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -389,6 +397,7 @@ public class Methodes {
             cote.setText("");
             titre.requestFocus();
             fillTable("livre", connection, table);
+            filllivreetable(connection,MainPanel.livresTable);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -426,6 +435,8 @@ public class Methodes {
         cote.setText("");
         titre.requestFocus();
         fillTable("livre", connection, table);
+        filllivreetable(connection,MainPanel.livresTable);
+
     }
 
     public static void searchLivre(Connection connection, JTable table, Boolean stf, String id,JTextField titre,JTextField auteur, JTextField annee, JTextField cote ){
@@ -484,6 +495,8 @@ public class Methodes {
         annee.setText("");
         titre.requestFocus();
         fillTable("livre", connection, table);
+        filllivreetable(connection,MainPanel.livresTable);
+
     }
 
     public static List<JTextField> extractTextFields(JPanel container) {

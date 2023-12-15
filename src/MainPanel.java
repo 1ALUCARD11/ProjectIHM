@@ -53,9 +53,9 @@ public class MainPanel extends JFrame {
     private final JLabel resultat1 = new JLabel("Resultat de la recherche");
     private final JLabel resultat2 = new JLabel("Resultat de la recherche");
 
-    private final JTable memoiresTable = new JTable();
-    private final JTable enseignantTable = new JTable();
-    private final JTable livresTable = new JTable();
+     static  JTable memoiresTable = new JTable();
+    static  JTable enseignantTable = new JTable();
+     static JTable livresTable = new JTable();
 
     private int currentCard=0;
     private ResultSet rs;
@@ -196,8 +196,8 @@ mainpanel.add(southP, BorderLayout.SOUTH);
         searchpan.setBackground(Color.WHITE);
 
         // Zone de recherche avec icone
-        Border roundedBorder = BorderFactory.createLineBorder(Color.BLACK, 2, true);
-        recherchtf.setBorder(BorderFactory.createCompoundBorder(roundedBorder, BorderFactory.createEmptyBorder(5, 40, 5, 10)));
+        //Border roundedBorder = BorderFactory.createLineBorder(Color.BLACK, 2, true);
+       // recherchtf.setBorder(BorderFactory.createCompoundBorder(roundedBorder, BorderFactory.createEmptyBorder(5, 40, 5, 10)));
         recherchtf.setFont(new Font("Bebas Neue", Font.PLAIN, 16));
         recherchtf.setPreferredSize(new Dimension(200, 30));
 
@@ -231,7 +231,7 @@ mainpanel.add(southP, BorderLayout.SOUTH);
         // Filtre
         JPanel filterPanel = new JPanel(new BorderLayout());
         filterPanel.setBackground(Color.WHITE);
-        filterPanel.setBorder(BorderFactory.createCompoundBorder(roundedBorder, BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+       // filterPanel.setBorder(BorderFactory.createCompoundBorder(roundedBorder, BorderFactory.createEmptyBorder(5, 10, 5, 10)));
 
         JLabel filterLabel = new JLabel("Rechercher par");
         filterLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 16));
@@ -426,6 +426,7 @@ mainpanel.add(southP, BorderLayout.SOUTH);
                 JOptionPane.showMessageDialog(this, "Veuillez sélectionner une ligne avant de voir les détails.", "Avertissement", JOptionPane.WARNING_MESSAGE);
             }
         }
+
     }
 
 }
