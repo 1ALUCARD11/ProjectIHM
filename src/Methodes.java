@@ -31,61 +31,6 @@ public class Methodes {
         return connection;
     }
 
-    public static void connect2() {
-        Connection connection;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/gestionbibliotheque", "root", "1234");
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("successe");
-
-        String url = "jdbc:mysql://localhost:3306/gestionbibliotheque";
-
-        String username = "root";
-
-        String password = "1234";
-
-        try {
-
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-
-            connection = null;
-
-            connection = DriverManager.getConnection(url, username, password);
-
-            Statement statement = null;
-
-            statement = connection.createStatement();
-
-
-            ResultSet resultSet = null;
-
-            resultSet = statement.executeQuery("select * from Enseignant");
-
-
-            // while (resultSet.next()) {
-
-
-            //   System.out.println(resultSet.getInt(1) + " " + resultSet.getString(2));
-
-
-            // }
-
-
-            connection.close();
-
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
 
     public static void fillTable(String tablename, Connection connection, JTable table) {
         String tmp = "select * from " + tablename;
