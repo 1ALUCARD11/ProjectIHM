@@ -1,6 +1,7 @@
 import net.proteanit.sql.DbUtils;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.io.File;
@@ -501,6 +502,9 @@ public class Methodes {
 
     public static Path addpdfs(String folder ,String filename){
         JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter pdf=new FileNameExtensionFilter("*pdf","pdf");
+        fileChooser.addChoosableFileFilter(pdf);
+        fileChooser.setFileFilter(pdf);
 
         String pth = "";
         Path destinationpath = Path.of("");
@@ -560,9 +564,14 @@ public class Methodes {
         }
     }
 
-    public static void affichagePDF(String t) throws SQLException, IOException {
+    public static void affichagePDF(String t,int current) throws SQLException, IOException {
         Connection connection=connect("gestionbibliotheque");
-        PreparedStatement ps= connection.prepareStatement("SELECT directoire FROM memoire where titre = ?");
+        PreparedStatement ps;
+        if (current == 0) {
+            ps= connection.prepareStatement("SELECT emplacement FROM livre where titre = ?");
+        } else {
+            ps= connection.prepareStatement("SELECT directoire FROM memoire where titre = ?");
+        }
         ps.setString(1,t);
         ResultSet rs= ps.executeQuery();
         rs.next();

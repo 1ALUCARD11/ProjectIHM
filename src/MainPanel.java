@@ -76,8 +76,8 @@ public class MainPanel extends JFrame {
         int logoWidth = (int) (logo.getIconWidth());
         int logoHeight = (int) (logo.getIconHeight());
 
-        Image imageLogo1 = logo.getImage().getScaledInstance(logoWidth,
-                logoHeight,
+        Image imageLogo1 = logo.getImage().getScaledInstance(logoWidth-100,
+                logoHeight-100,
                 Image.SCALE_SMOOTH); // Utilisation de SCALE_SMOOTH
         ImageIcon logo1 = new ImageIcon(imageLogo1);
         JLabel logoLabel = new JLabel(logo1);
@@ -86,6 +86,7 @@ public class MainPanel extends JFrame {
         JPanel adminPanel = new JPanel();
         adminPanel.add(admin_b);
         adminPanel.setBackground(Color.WHITE);
+        topPartPanel.add(logoLabel,BorderLayout.WEST);
         topPartPanel.add(adminPanel, BorderLayout.EAST);
         topPartPanel.setBackground(Color.WHITE);
         topPartPanel.setSize(500,500);
@@ -403,11 +404,11 @@ mainpanel.add(southP, BorderLayout.SOUTH);
                     // Ajouter une ligne séparatrice après chaque paire titre-zone de texte
                     detailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
                 }
-                if(currentCard==1) {
+                if(currentCard==1 || currentCard==0) {
                     pdfButton.addActionListener(e -> {
                         String t= String.valueOf(rowData[0]);
                         try {
-                            Methodes.affichagePDF(t);
+                            Methodes.affichagePDF(t,currentCard);
                         } catch (SQLException | IOException ex) {
                             throw new RuntimeException(ex);
                         }
